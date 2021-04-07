@@ -1,10 +1,16 @@
 package base64Captcha
 
 import (
+	"embed"
+	"math/rand"
+
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
-	"math/rand"
 )
+
+
+//go:embed fonts/3Dumb.ttf fonts/ApothecaryFont.ttf fonts/Comismsh.ttf fonts/DENNEthree-dee.ttf fonts/DeborahFancyDress.ttf fonts/Flim-Flam.ttf fonts/RitaSmith.ttf fonts/actionj.ttf fonts/chromohv.ttf fonts/wqy-microhei.ttc
+var fontsFiles embed.FS
 
 var fontsSimple = loadFontsByNames([]string{
 	"fonts/3Dumb.ttf",
@@ -17,13 +23,11 @@ var fontsSimple = loadFontsByNames([]string{
 	"fonts/actionj.ttf",
 	"fonts/chromohv.ttf",
 })
-
-//var fontemoji = loadFontByName("fonts/seguiemj.ttf")
-var fontsAll = append(fontsSimple, fontChinese)
+// var fontemoji = loadFontByName("fonts/seguiemj.ttf")
 var fontChinese = loadFontByName("fonts/wqy-microhei.ttc")
-
+var fontsAll = append(fontsSimple, fontChinese)
 func loadFontByName(name string) *truetype.Font {
-	fontBytes, err := Asset(name)
+	fontBytes, err := fontsFiles.ReadFile(name)
 	if err != nil {
 		panic(err)
 	}
